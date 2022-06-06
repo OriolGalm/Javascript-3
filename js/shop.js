@@ -111,6 +111,7 @@ function generateCart() {
         subtotal: cartList.price * contador,
         subtotalWithDiscount: 0};
     
+        
     for(let i = 0; i<cartList.length; i++){
         if(products[i].id === cartList[i].id){
             contador++;
