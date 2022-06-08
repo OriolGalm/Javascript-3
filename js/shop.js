@@ -71,7 +71,7 @@ var cart = [];
 
 var total = 0;
 var priceTotal = 0;
-var contador = 0;
+var contador = [];
 
 // Exercise 1
 function buy(id) {
@@ -83,8 +83,8 @@ function buy(id) {
         }
     } 
     calculateTotal();
-    generateCart();
-    console.log("Array cartList: " + JSON.stringify(cartList));
+    generateCart(id);
+//    console.log("Array cartList: " + JSON.stringify(cartList));
 }
 
 
@@ -104,21 +104,29 @@ function calculateTotal() {
 }
 
 // Exercise 4
-function generateCart() {
+function generateCart(ref) {
     // Using the "cartlist" array that contains all the items in the shopping cart, 
     // generate the "cart" array that does not contain repeated items, instead each item of this array "cart" shows the quantity of product.
-    var quant = {quantity: contador,
-        subtotal: cartList.price * contador,
-        subtotalWithDiscount: 0};
     
-        
     for(let i = 0; i<cartList.length; i++){
-        if(products[i].id === cartList[i].id){
-            contador++;
-            cart = Object.assign(cartList[i], quant);
-        } 
+        
+        if(cart[i] === undefined || cart.includes(cartList[i]) == false){
+          
+            cart.push(cartList[i]);
+            contador.push(ref);    
+            const result = contador.filter(e => e == ref);
+            const index = result.length;
+            var quant = {quantity: index,
+                subtotal: cartList[i].price * index,
+                subtotalWithDiscount: 0};
+            Object.assign(cart[i], quant);
+            
+            console.log("Quantitat: ", index);
+        }
+        
+        console.log("Array cart: " + JSON.stringify("Id: " + contador)); 
+        console.log("Array cart: " + JSON.stringify(cart)); 
     }
-    console.log("Array cart: " + JSON.stringify(cart));
 }
 
 // Exercise 5
