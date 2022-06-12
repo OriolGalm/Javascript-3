@@ -122,14 +122,14 @@ function generateCart(ref) {
             const index = result.filter(s => s == ref);
             var quant = {quantity: index.length,
                 subtotal: cartList[i].price * index.length,
-                subtotalWithDiscount: parseFloat(0).toFixed()};
+                subtotalWithDiscount: 0};
             nouCart.push(Object.assign(cartList[i], quant));
             console.log("Array index: " + JSON.stringify("Id: " + index)); 
           }else{
             nouCart.push(cartList[i]);
             contador.push(ref); 
             result.push(ref);
-            }
+          }
 
         cart = nouCart.filter(element => {
         const isDuplicate = cart.includes(element.id);
@@ -155,7 +155,8 @@ function applyPromotionsCart() {
     let idResult2 = result.filter(x => x == 3);
     if(idResult.length >= 3){
         let discount = cart.find(d => d.id == 1).subtotalWithDiscount = 10;
-        cart.find(d => d.id == 1).subtotal - discount;
+        totalProds1 = cart.find(d => d.id == 1).subtotal;
+        cart.find(d => d.id == 1).subtotal = totalProds1 - discount;
     }
 
     if(idResult2.length >= 10){
@@ -168,6 +169,17 @@ function applyPromotionsCart() {
 // Exercise 6
 function printCart() {
     // Fill the shopping cart modal manipulating the shopping cart dom
+    let t1 = "<table><thead><tr><th scope='col'>Product</th><th scope='col'>Price</th><th scope='col'>Qty.</th><th scope='col'>Total<small>(with discount)</small></th></tr></thead>";
+    for(let i = 0; i<cart.length; i++){
+        t1 += `<tr>
+            <td>${cart[i].name}</td>
+            <td>${cart[i].price}</td>
+            <td>${cart[i].quantity}</td>
+            <td>${cart[i].subtotal}</td>
+            </tr>`;
+    }
+    t1 += "</table>";
+    document.getElementById("taula").innerHTML = t1;    
 }
 
 
