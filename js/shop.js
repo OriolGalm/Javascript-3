@@ -102,7 +102,8 @@ function calculateTotal() {
     total += priceTotal;
     return total;   
 }
-
+let result = [];
+let nouCart = [];
 // Exercise 4
 function generateCart(ref) {
     // Using the "cartlist" array that contains all the items in the shopping cart, 
@@ -110,28 +111,58 @@ function generateCart(ref) {
     
     for(let i = 0; i<cartList.length; i++){
         
-        if(cart[i] === undefined || cart.includes(cartList[i]) == false){
-          
-            cart.push(cartList[i]);
-            contador.push(ref);    
-            const result = contador.filter(e => e == ref);
-            const index = result.length;
-            var quant = {quantity: index,
-                subtotal: cartList[i].price * index,
-                subtotalWithDiscount: 0};
-            Object.assign(cart[i], quant);
-            
-            console.log("Quantitat: ", index);
+        if(nouCart[i] === undefined || nouCart.includes(cartList[i]) == false){
+           
+          if(contador.length == 0){
+            nouCart.push(cartList[i]);
+            contador.push(ref); 
+            result = contador.filter(e => e == ref);   
+          }else if(contador.includes(ref) === true){   
+            result.push(ref);  
+            const index = result.filter(s => s == ref);
+            var quant = {quantity: index.length,
+                subtotal: cartList[i].price * index.length,
+                subtotalWithDiscount: parseFloat(0).toFixed()};
+            nouCart.push(Object.assign(cartList[i], quant));
+            console.log("Array index: " + JSON.stringify("Id: " + index)); 
+          }else{
+            nouCart.push(cartList[i]);
+            contador.push(ref); 
+            result.push(ref);
+            }
+
+        cart = nouCart.filter(element => {
+        const isDuplicate = cart.includes(element.id);
+        if (!isDuplicate) {
+            cart.push(element.id);
+            return true;
         }
-        
-        console.log("Array cart: " + JSON.stringify("Id: " + contador)); 
+        return false;
+        });
+        }
+        applyPromotionsCart();
+        console.log("Array contador: " + JSON.stringify("Id: " + contador)); 
+        console.log("Array result: " + JSON.stringify("Id: " + result)); 
         console.log("Array cart: " + JSON.stringify(cart)); 
     }
+
 }
 
 // Exercise 5
 function applyPromotionsCart() {
     // Apply promotions to each item in the array "cart"
+    let idResult = result.filter(x => x == 1);
+    let idResult2 = result.filter(x => x == 3);
+    if(idResult.length >= 3){
+        let discount = cart.find(d => d.id == 1).subtotalWithDiscount = 10;
+        cart.find(d => d.id == 1).subtotal - discount;
+    }
+
+    if(idResult2.length >= 10){
+        let totalProds = cart.find(x => x.id == 3).subtotal;
+        let calcDiscount = cart.find(x => x.id == 3).subtotalWithDiscount = (totalProds / 100) * 33.3;
+        cart.find(x => x.id == 3).subtotal = totalProds - calcDiscount; 
+    }
 }
 
 // Exercise 6
