@@ -112,54 +112,42 @@ function generateCart(ref) {
     for(let i = 0; i<cartList.length; i++){
         
         if(nouCart[i] === undefined || nouCart.includes(cartList[i]) == false){
-           
-          if(contador.length == 0){
-            nouCart.push(cartList[i]);
+
             contador.push(ref); 
-            result = contador.filter(e => e == ref);   
-          }else if(contador.includes(ref) === true){   
-            result.push(ref);  
+            result = contador.filter(e => e == ref);               
             const index = result.filter(s => s == ref);
             var quant = {quantity: index.length,
                 subtotal: cartList[i].price * index.length,
                 subtotalWithDiscount: 0};
             nouCart.push(Object.assign(cartList[i], quant));
-            console.log("Array index: " + JSON.stringify("Id: " + index)); 
-          }else{
-            nouCart.push(cartList[i]);
-            contador.push(ref); 
-            result.push(ref);
-          }
+            console.log("Array index: " + JSON.stringify("Id: " + index));
 
-        cart = nouCart.filter(element => {
-        const isDuplicate = cart.includes(element.id);
-        if (!isDuplicate) {
-            cart.push(element.id);
-            return true;
+            cart = nouCart.filter(element => {
+            const isDuplicate = cart.includes(element.id);
+            if (!isDuplicate) {
+                cart.push(element.id);
+                return true;
+            }
+            return false;
+            });
         }
-        return false;
-        });
-        }
-        applyPromotionsCart();
-        console.log("Array contador: " + JSON.stringify("Id: " + contador)); 
-        console.log("Array result: " + JSON.stringify("Id: " + result)); 
-        console.log("Array cart: " + JSON.stringify(cart)); 
     }
-
+    applyPromotionsCart(ref);
+    console.log("Array cart: " + JSON.stringify(cart));
 }
 
 // Exercise 5
-function applyPromotionsCart() {
+function applyPromotionsCart(ref) {
     // Apply promotions to each item in the array "cart"
     let idResult = result.filter(x => x == 1);
     let idResult2 = result.filter(x => x == 3);
-    if(idResult.length >= 3){
+    if(idResult.length >= 3 && ref == 1){
         let discount = cart.find(d => d.id == 1).subtotalWithDiscount = 10;
         totalProds1 = cart.find(d => d.id == 1).subtotal;
         cart.find(d => d.id == 1).subtotal = totalProds1 - discount;
     }
 
-    if(idResult2.length >= 10){
+    if(idResult2.length >= 10 && ref == 3){
         let totalProds = cart.find(x => x.id == 3).subtotal;
         let calcDiscount = cart.find(x => x.id == 3).subtotalWithDiscount = (totalProds / 100) * 33.3;
         cart.find(x => x.id == 3).subtotal = totalProds - calcDiscount; 
@@ -169,16 +157,16 @@ function applyPromotionsCart() {
 // Exercise 6
 function printCart() {
     // Fill the shopping cart modal manipulating the shopping cart dom
-    let t1 = "<table><thead><tr><th scope='col'>Product</th><th scope='col'>Price</th><th scope='col'>Qty.</th><th scope='col'>Total<small>(with discount)</small></th></tr></thead>";
+    let t1 = "<table class='table'><thead><tr><th scope='col'>Product</th><th scope='col'>Price</th><th scope='col'>Qty.</th><th scope='col'>Total<small>(with discount)</small></th></tr></thead><tbody id='cart_list'>";
     for(let i = 0; i<cart.length; i++){
-        t1 += `<tr>
-            <td>${cart[i].name}</td>
-            <td>${cart[i].price}</td>
+        t1 += `<tr scope='row'>
+            <th>${cart[i].name}</th>
+            <td>${cart[i].price}€</td>
             <td>${cart[i].quantity}</td>
-            <td>${cart[i].subtotal}</td>
+            <td>${cart[i].subtotal}€</td>
             </tr>`;
     }
-    t1 += "</table>";
+    t1 += "</tbody></table>";
     document.getElementById("taula").innerHTML = t1;    
 }
 
