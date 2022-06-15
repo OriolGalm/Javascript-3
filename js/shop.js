@@ -68,11 +68,13 @@ var cartList = [];
 
 // Improved version of cartList. Cart is an array of products (objects), but each one has a quantity field to define its quantity, so these products are not repeated.
 var cart = [];
-
 var total = 0;
 var priceTotal = 0;
 var contador = [];
-
+let result = [];
+let nouCart = [];
+let index = [];
+console.log("Index a l'arrel: ", index);
 // Exercise 1
 function buy(id) {
     // 1. Loop for to the array products to get the item to add to cart
@@ -102,8 +104,7 @@ function calculateTotal() {
     total += priceTotal;
     return total;   
 }
-let result = [];
-let nouCart = [];
+
 // Exercise 4
 function generateCart(ref) {
     // Using the "cartlist" array that contains all the items in the shopping cart, 
@@ -115,7 +116,7 @@ function generateCart(ref) {
 
             contador.push(ref); 
             result = contador.filter(e => e == ref);               
-            const index = result.filter(s => s == ref);
+            index = result.filter(s => s == ref);
             var quant = {quantity: index.length,
                 subtotal: cartList[i].price * index.length,
                 subtotalWithDiscount: 0};
@@ -177,13 +178,53 @@ function printCart() {
 function addToCart(id) {
     // Refactor previous code in order to simplify it 
     // 1. Loop for to the array products to get the item to add to cart
+    for(let i = 0; i < products.length; i++){
+        if(products[i].id == id){
+            cartList.push(products[id-1]);
+        }
+    } 
+    calculateTotal();
     // 2. Add found product to the cart array or update its quantity in case it has been added previously.
+    for(let i = 0; i<cartList.length; i++){
+        
+        if(nouCart[i] === undefined || nouCart.includes(cartList[i]) == false){
+
+            contador.push(id); 
+            result = contador.filter(e => e == id);               
+            index = result.filter(s => s == id);
+            var quant = {quantity: index.length,
+                subtotal: cartList[i].price * index.length,
+                subtotalWithDiscount: 0};
+            nouCart.push(Object.assign(cartList[i], quant));
+            console.log("Array index: " + JSON.stringify("Id: " + index.length));
+
+            cart = nouCart.filter(element => {
+            const isDuplicate = cart.includes(element.id);
+            if (!isDuplicate) {
+                cart.push(element.id);
+                return true;
+            }
+            return false;
+            });
+        }
+    }
+    applyPromotionsCart(id);
 }
 
 // Exercise 8
 function removeFromCart(id) {
     // 1. Loop for to the array products to get the item to add to cart
+   /*  for(let i = 0; i<cart.length; i++){
+        
     // 2. Add found product to the cartList array
+        if(cart[i].id == id){
+            index.pop();
+            cart[i].quantity = index.length;
+            cart[i].subtotal = cart[i].price * index.length;
+            console.log("Index: ", index.length);
+        }
+    }
+    applyPromotionsCart(id) */
 }
 
 function open_modal(){
