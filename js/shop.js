@@ -73,8 +73,7 @@ var priceTotal = 0;
 var contador = [];
 let result = [];
 let nouCart = [];
-let index = [];
-console.log("Index a l'arrel: ", index);
+
 // Exercise 1
 function buy(id) {
     // 1. Loop for to the array products to get the item to add to cart
@@ -86,7 +85,6 @@ function buy(id) {
     } 
     calculateTotal();
     generateCart(id);
-//    console.log("Array cartList: " + JSON.stringify(cartList));
 }
 
 
@@ -116,12 +114,10 @@ function generateCart(ref) {
 
             contador.push(ref); 
             result = contador.filter(e => e == ref);               
-            index = result.filter(s => s == ref);
-            var quant = {quantity: index.length,
-                subtotal: cartList[i].price * index.length,
+            var quant = {quantity: result.length,
+                subtotal: cartList[i].price * result.length,
                 subtotalWithDiscount: 0};
             nouCart.push(Object.assign(cartList[i], quant));
-            console.log("Array index: " + JSON.stringify("Id: " + index));
 
             cart = nouCart.filter(element => {
             const isDuplicate = cart.includes(element.id);
@@ -189,15 +185,13 @@ function addToCart(id) {
         
         if(nouCart[i] === undefined || nouCart.includes(cartList[i]) == false){
 
-            contador.push(id); 
-            result = contador.filter(e => e == id);               
-            index = result.filter(s => s == id);
-            var quant = {quantity: index.length,
-                subtotal: cartList[i].price * index.length,
+            contador.push(id); //Fico les id's que arriben per paràmetre a l'array contador
+            result = contador.filter(e => e == id);//Separo les id's que són iguals a les que arriben per paràmetre, i les fico a l'array result               
+            var quant = {quantity: result.length,
+                subtotal: cartList[i].price * result.length,
                 subtotalWithDiscount: 0};
             nouCart.push(Object.assign(cartList[i], quant));
-            console.log("Array index: " + JSON.stringify("Id: " + index.length));
-
+            //Duplico l'array nouCart al cart per poder-lo manipular
             cart = nouCart.filter(element => {
             const isDuplicate = cart.includes(element.id);
             if (!isDuplicate) {
@@ -206,6 +200,12 @@ function addToCart(id) {
             }
             return false;
             });
+            //Evita que apareguin els productes eliminats amb quantity a "0"
+            for(let x = 0; x < cart.length; x++){
+                if(cart[x].quantity == 0){
+                    cart.splice(x, 1);
+                }
+            }
         }
     }
     applyPromotionsCart(id);
@@ -214,17 +214,26 @@ function addToCart(id) {
 // Exercise 8
 function removeFromCart(id) {
     // 1. Loop for to the array products to get the item to add to cart
-   /*  for(let i = 0; i<cart.length; i++){
+    for(let i = 0; i<cart.length; i++){
         
     // 2. Add found product to the cartList array
         if(cart[i].id == id){
-            index.pop();
-            cart[i].quantity = index.length;
-            cart[i].subtotal = cart[i].price * index.length;
-            console.log("Index: ", index.length);
+            for(let j = 0; j < contador.length; j++) {//Borro el producte de l'array contador
+                if(contador[j] == id) {
+                    contador.splice(j, 1);
+                    break;
+                }
+            }//Amb el filter borro el producte dels arrays result 
+            result = contador.filter(e => e == id);               
+            cart[i].quantity = result.length;
+            cart[i].subtotal = cart[i].price * result.length;
+            //Elimina de l'array els productes amb quantity a "0"
+            if(cart[i].quantity == 0){
+                cart.splice(i, 1);
+            }
         }
     }
-    applyPromotionsCart(id) */
+    applyPromotionsCart(id);
 }
 
 function open_modal(){

@@ -1,11 +1,5 @@
 
 // Exercise 6
-document.getElementById("errorName").style.display = "none";
-document.getElementById("errorEmail").style.display = "none";  
-document.getElementById("errorAddress").style.display = "none";
-document.getElementById("errorLastN").style.display = "none";
-document.getElementById("errorPassword").style.display = "none";
-document.getElementById("errorPhone").style.display = "none";
 function validate() {
 	var error = 0;
 	// Get the input fields
@@ -31,7 +25,7 @@ function validate() {
 		document.getElementById("errorName").style.display = "none";
 	}
 
-	if(fEmail.value.length <= 2){
+	if(!fEmail.value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
 		fEmail.style.border = "2px solid red";
 		document.getElementById("errorEmail").style.display = "block";
 		document.getElementById("errorEmail").style.color = "red";
