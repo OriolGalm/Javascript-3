@@ -185,13 +185,13 @@ function addToCart(id) {
         
         if(nouCart[i] === undefined || nouCart.includes(cartList[i]) == false){
 
-            contador.push(id); //Fico les id's que arriben per paràmetre a l'array contador
-            result = contador.filter(e => e == id);//Separo les id's que són iguals a les que arriben per paràmetre, i les fico a l'array result               
+            contador.push(id); 
+            result = contador.filter(e => e == id);//Es crea l'array result, a on es separen les id's de l'array contador que són iguals a les que arriben per paràmetre               
             var quant = {quantity: result.length,
                 subtotal: cartList[i].price * result.length,
                 subtotalWithDiscount: 0};
             nouCart.push(Object.assign(cartList[i], quant));
-            //Duplico l'array nouCart al cart per poder-lo manipular
+            //Duplica l'array nouCart a l'array cart per poder-lo manipular
             cart = nouCart.filter(element => {
             const isDuplicate = cart.includes(element.id);
             if (!isDuplicate) {
@@ -223,11 +223,11 @@ function removeFromCart(id) {
                     contador.splice(j, 1);
                     break;
                 }
-            }//Amb el filter borro el producte dels arrays result 
+            }//La id del producte a borrar va a l'array result 
             result = contador.filter(e => e == id);               
             cart[i].quantity = result.length;
             cart[i].subtotal = cart[i].price * result.length;
-            //Elimina de l'array els productes amb quantity a "0"
+            //Elimina de l'array els productes amb quantity "0"
             if(cart[i].quantity == 0){
                 cart.splice(i, 1);
             }
